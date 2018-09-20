@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "337795493187",
+    "firebase_url": "https://forestappupt.firebaseio.com",
+    "project_id": "forestappupt",
+    "storage_bucket": "forestappupt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337795493187:android:b2dcc61049fabc49",
+        "android_client_info": {
+          "package_name": "com.coding.jjlop.forestappupt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337795493187-iejug54ckd9dee6fr2tq3fe5ng141hlk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coding.jjlop.forestappupt",
+            "certificate_hash": "597fe66dddf54fca3f464f8044ca0c1e0f35f76f"
+          }
+        },
+        {
+          "client_id": "337795493187-6n8pdo45ae4qnfsj5uerc6c8qfq7c0bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkQBzvufszrMDqGJ4iE-XPZQNwZouknpY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337795493187-6n8pdo45ae4qnfsj5uerc6c8qfq7c0bi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

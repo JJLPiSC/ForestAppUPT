@@ -1,0 +1,64 @@
+<RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:background="#e1e6e7"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/btn_resume"
+        tools:context="com.coding.jjlop.forestappupt.Views.Plant"
+        />
+
+    <Button
+        android:id="@+id/btn_resume"
+        android:text="@string/resume"
+        android:layout_above="@+id/snp_tr"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="toggleNetworkUpdates" />
+
+    <Spinner
+        android:id="@+id/snp_tr"
+        style="@style/Widget.AppCompat.Spinner.DropDown"
+        android:textAlignment="center"
+        android:layout_above="@+id/txt_alias"
+        android:popupTheme="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+    <EditText
+        android:id="@+id/txt_alias"
+        android:hint="Alias"
+        android:textAlignment="center"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_above="@+id/btn_Add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_Add"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_above="@+id/btn_Save"
+        android:textColor="#FFF"
+        android:text="Agregar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btn_Save"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:textColor="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:text="Guardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
