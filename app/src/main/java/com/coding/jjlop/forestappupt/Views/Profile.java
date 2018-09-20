@@ -1,20 +1,18 @@
 package com.coding.jjlop.forestappupt.Views;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.coding.jjlop.forestappupt.Login;
-import com.coding.jjlop.forestappupt.Model.User;
 import com.coding.jjlop.forestappupt.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -22,19 +20,18 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.shashank.sony.fancytoastlib.FancyToast;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Profile extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -42,11 +39,13 @@ public class Profile extends AppCompatActivity implements GoogleApiClient.OnConn
     private TextView txt_nick, txt_email, txt_p, txt_d, txt_q;
     private Button b1;
     private DatabaseReference mDatabase;
+    private ArrayList<String> tList = new ArrayList<String>();
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private FirebaseUser user;
     String uid, d, qu, p;
+    private  int tpoints = 0;
     Integer tp;
 
     @Override
@@ -63,6 +62,7 @@ public class Profile extends AppCompatActivity implements GoogleApiClient.OnConn
         b1 = findViewById(R.id.btn1);
         b1.setOnClickListener(this);
         tp = 0;
+        fillList();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -100,6 +100,7 @@ public class Profile extends AppCompatActivity implements GoogleApiClient.OnConn
         super.onStart();
 
         firebaseAuth.addAuthStateListener(firebaseAuthListener);
+        fillList();
     }
 
     private void goLogInScreen() {
@@ -157,42 +158,6 @@ public class Profile extends AppCompatActivity implements GoogleApiClient.OnConn
     }
 
     public void fData(final FirebaseUser user1) {
-
-       /*Query qur = mDatabase.child("T_Ctlg").orderByChild("").equalTo(uid);
-        Log.d("", "UID: " + uid);
-        qur.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() != 0) {
-                    dataSnapshot.getRef().addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot areaSnapshot : dataSnapshot.getChildren()) {
-                                Log.d("", "ALIASBD: " + areaSnapshot.child("alias").getValue(String.class));
-                                if (areaSnapshot.child("id_at").getValue(String.class).equals(uid)) {
-                                    tp +=Integer.parseInt(areaSnapshot.child("value").getValue(String.class)) ;
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-
-                } else {
-                    tp = 0;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
         final Query q = mDatabase.child("Users");
         //Query q = mDatabase.child("T_Ctlg");
         q.addValueEventListener(new ValueEventListener() {
@@ -207,6 +172,11 @@ public class Profile extends AppCompatActivity implements GoogleApiClient.OnConn
                         txt_p.setText("Puntos Totales: " + tp);
                         txt_d.setText("Carrera: " + d);
                         txt_q.setText("Cuatrimestre: " + qu);
+                        //fillList();
+                        Log.d("", "Number E: " + tList.size());
+                        if (tList.size() >= 0) {
+                            txt_p.setText("Puntos Totales: " + Points());
+                        }
                     }
                 }
             }
@@ -216,6 +186,60 @@ public class Profile extends AppCompatActivity implements GoogleApiClient.OnConn
 
             }
         });
+    }
+
+    public List<String> fillList() {
+        Query q = mDatabase.child("Planted");
+
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String id = dataSnapshot.child("id_at").getValue(String.class);
+                Log.d("","Id DB: "+id);
+                Log.d("","Local Id: "+uid);
+                if (id.equals(uid)) {
+                    String type = dataSnapshot.child("type").getValue(String.class);
+                    Log.d("","Element: "+type);
+                    tList.add(type);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                tList.clear();
+                fillList();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                tList.clear();
+                fillList();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return tList;
+    }
+
+    public int Points() {
+        for (int i = 0; i < tList.size(); i++) {
+            if (tList.get(i).equals("Pino")) {
+                tpoints += 1;
+            } if (tList.get(i).equals("Durazno")) {
+                tpoints += 2;
+            } if (tList.get(i).equals("Ciruelo")) {
+                tpoints += 3;
+            }
+        }
+        return tpoints;
     }
 
     @Override
